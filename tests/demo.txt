@@ -1,0 +1,21 @@
+
+include
+namespace
+
+$json = {"smth"} decode
+
+new product($con)
+newproduct::(?)create($json)
+ultility::redirect(?)
+
+
+-------------------
+newproduct::(?)create($json)
+--->
+
+
+
+
+
+
+

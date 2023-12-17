@@ -1,6 +1,7 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+
+namespace Product;
+
 //book subclass for product
 class Book extends Product {
     // declare book specific field

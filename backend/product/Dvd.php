@@ -1,5 +1,7 @@
 <?php
 
+namespace Product;
+
 // DVD subclass for Product
 class DVD extends Product {
     // Declare DVD specific fields

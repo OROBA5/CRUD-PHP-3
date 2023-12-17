@@ -2,15 +2,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+// Call the setCorsHeaders function
+Utility::setCorsHeaders();
 
-include_once '../backend/config/Database.php';
-include_once '../backend/product/ProductBlueprint.php';
-include_once '../backend/product/Product.php';
-include_once '../backend/product/Book.php';
-include_once '../backend/product/Dvd.php';
-include_once '../backend/product/Furniture.php';
+include_once '../backend/config/Utility.php';
 
 
 $database = new Database();

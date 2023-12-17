@@ -1,5 +1,7 @@
 <?php
 
+namespace Product;
+
 class Product extends ProductBlueprint {
     // declare primary product fields
     protected $id;

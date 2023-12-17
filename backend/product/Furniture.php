@@ -1,4 +1,7 @@
 <?php
+
+namespace Product;
+
 class Furniture extends Product {
     // Declare furniture specific fields
     public $height;

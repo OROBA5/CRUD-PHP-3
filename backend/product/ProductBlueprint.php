@@ -1,5 +1,7 @@
 <?php
 
+namespace Product;
+
 // abstract class for the products
 
 abstract class ProductBlueprint {
