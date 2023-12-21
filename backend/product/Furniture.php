@@ -138,13 +138,10 @@ public function create()
             // Fetch all data from the result set
             $furnitureData = $result->fetch_all(MYSQLI_ASSOC);
 
-            // Output Furniture data as JSON
-            http_response_code(200);
-            echo json_encode($furnitureData);
+            return $furnitureData;
         } else {
             // No rows found
-            http_response_code(404);
-            echo json_encode(array());
+            return array();
         }
     }
 

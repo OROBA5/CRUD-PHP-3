@@ -3,7 +3,7 @@
 namespace Product;
 
 // DVD subclass for Product
-class DVD extends Product {
+class Dvd extends Product {
     // Declare DVD specific fields
     public $size;
     private $conn;
@@ -117,18 +117,15 @@ public function create()
         // Fetch all data from the result set
         $dvdsData = $result->fetch_all(MYSQLI_ASSOC);
 
-        // Output DVDs data as JSON
-        http_response_code(200);
-        echo json_encode($dvdsData);
+        return $dvdsData;
     } else {
         // No rows found
-        http_response_code(404);
-        echo json_encode(array());
+        return array();
     }
     }
 
-        // Inside the Dvd class
-    function delete($conn) {
+    // Inside the Dvd class
+    public function delete($conn) {
         try {
             $productId = $this->getId();
         
@@ -138,15 +135,15 @@ public function create()
             $deleteDvdStmt->execute();
 
             if ($deleteDvdStmt->error) {
-                throw new Exception("Error deleting dvd. MySQL error: " . $deleteDvdStmt->error);
+                throw new \Exception("Error deleting dvd. MySQL error: " . $deleteDvdStmt->error);
             }
 
             $deleteDvdStmt->close();
 
-            // Call the delete() method of the parent class (Product)
+            // Delete the product entry
             parent::delete($conn);
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log the error for further analysis
             error_log($e);
 

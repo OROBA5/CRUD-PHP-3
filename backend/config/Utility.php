@@ -3,11 +3,10 @@
 namespace Config;
 
 class Utility {
-    // Autoloader function
     public static function autoloader($class) {
-        // Convert namespace separators to directory separators
-        $classFile = __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
-        
+        $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+        $classFile = __DIR__ . '/../' . $class . '.php';
+
         if (file_exists($classFile)) {
             include $classFile;
         }
@@ -29,9 +28,6 @@ class Utility {
     }
 
 }
-
-// Register the autoloader
-Utility::registerAutoloader();
 
 
 ?>

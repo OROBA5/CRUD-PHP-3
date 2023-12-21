@@ -122,13 +122,10 @@ public function create()
             // Fetch all data from the result set
             $booksData = $result->fetch_all(MYSQLI_ASSOC);
 
-            // Output books data as JSON
-            http_response_code(200);
-            echo json_encode($booksData);
+            return $booksData;
         } else {
             // No rows found
-            http_response_code(404);
-            echo json_encode(array());
+            return array();
         }
     }
 
