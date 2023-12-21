@@ -4,6 +4,8 @@ namespace ProductActions;
 
 class Product {
 
+    
+
     //uses Factory and creates product
     public function create() {}
 

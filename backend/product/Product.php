@@ -4,11 +4,11 @@ namespace Product;
 
 class Product extends ProductBlueprint {
     // declare primary product fields
-    protected $id;
-    protected $sku;
-    protected $name;
-    protected $price;
-    protected $product_type;
+    public $id;
+    public $sku;
+    public $name;
+    public $price;
+    public $product_type;
     private $conn;
 
     //declares constructor for products

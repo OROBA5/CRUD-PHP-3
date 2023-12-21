@@ -2,20 +2,24 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-include_once '../backend/config/Database.php';
-include_once '../backend/product/ProductBlueprint.php';
-include_once '../backend/product/Product.php';
-include_once '../backend/product/Book.php';
-include_once '../backend/product/Dvd.php';
-include_once '../backend/product/Furniture.php';
+// Include Utility file first
+include_once '../backend/config/Utility.php';
 
-$database = new Database();
+// Call the setCorsHeaders function
+\Config\Utility::setCorsHeaders();
+
+// Check if the class exists before attempting to register the autoloader
+if (!class_exists('Config\Utility')) {
+    \Config\Utility::registerAutoloader();
+}
+
+$database = new \config\Database();
 $db = $database->getConnection();
 
 // Create an instance of the Book class
-$book = new Book($db);
-$dvd = new Dvd($db);
-$fur = new Furniture($db);
+$book = new \product\Book($db);
+$dvd = new \product\Dvd($db);
+$fur = new \product\Furniture($db);
 
 // Call the read method to fetch and output all books as JSON
 $book->read();

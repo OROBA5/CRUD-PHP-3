@@ -1,13 +1,11 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-
-// Call the setCorsHeaders function
-Utility::setCorsHeaders();
-
 include_once '../backend/config/Utility.php';
+// Call the setCorsHeaders function
+\config\Utility::setCorsHeaders();
 
-$database = new Database();
+$database = new \config\Database();
 $conn = $database->getConnection();
 
 // Simulate receiving data in JSON format
@@ -17,7 +15,7 @@ $jsonData = '{"weight":300,"sku":"Demotest003","name":"Sample Book 1","price":"1
 $data = json_decode($jsonData, true);
 
 // Create a new instance of the Book class
-$book = new Book($conn);
+$book = new \product\Book($conn);
 
 // Set book data from the received JSON
 $book->setSku($data['sku']);

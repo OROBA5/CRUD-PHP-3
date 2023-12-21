@@ -27,74 +27,74 @@ class DVD extends Product {
         $this->size = $size;
     }
 
-    public function create()
-    {
-        // Insert data into the "product" table
-        $productStmt = $this->conn->prepare("
-            INSERT INTO product(`sku`, `name`, `price`, `product_type`)
-            VALUES(?, ?, ?, ?)");
+    // Inside the Dvd class
+public function create()
+{
+    // Insert data into the "product" table
+    $productStmt = $this->conn->prepare("
+        INSERT INTO product(`sku`, `name`, `price`, `product_type`)
+        VALUES(?, ?, ?, ?)");
 
-        $sku = $this->getSku();
-        $name = $this->getName();
-        $price = $this->getPrice();
-        $productType = $this->getProductType();
+    $sku = $this->getSku();
+    $name = $this->getName();
+    $price = $this->getPrice();
+    $productType = $this->getProductType();
 
-        $sku = htmlspecialchars(strip_tags($sku));
-        $name = htmlspecialchars(strip_tags($name));
-        $price = htmlspecialchars(strip_tags($price));
-        $productType = htmlspecialchars(strip_tags($productType));
+    $sku = htmlspecialchars(strip_tags($sku));
+    $name = htmlspecialchars(strip_tags($name));
+    $price = htmlspecialchars(strip_tags($price));
+    $productType = htmlspecialchars(strip_tags($productType));
 
-        $productStmt->bind_param("ssis", $sku, $name, $price, $productType);
+    $productStmt->bind_param("ssis", $sku, $name, $price, $productType);
 
-        // Insert data into the "product" table first
-        if ($productStmt->execute()) {
-            // Get the generated product ID
-            $product_id = $this->conn->insert_id; // Explicitly define product_id
-            $this->id = $this->conn->insert_id; // Update this line
-            $productStmt->close();
+    // Insert data into the "product" table first
+    if ($productStmt->execute()) {
+        // Get the generated product ID
+        $product_id = $this->conn->insert_id; // Explicitly define product_id
+        $this->id = $product_id; // Update this line
+        $productStmt->close();
 
-            // Insert data into the "dvd" table
-            $dvdStmt = $this->conn->prepare("
-                INSERT INTO dvd(`product_id`, `size`)
-                VALUES(?, ?)");
+        // Insert data into the "dvd" table
+        $dvdStmt = $this->conn->prepare("
+            INSERT INTO dvd(`id`, `product_id`, `size`)
+            VALUES(?, ?, ?)");
 
-            $size = $this->getSize();
+        $size = $this->getSize();
 
-            $dvdStmt->bind_param("id", $product_id, $size);
+        // Use explicitly defined $product_id as both id and product_id
+        $dvdStmt->bind_param("iii", $product_id, $product_id, $size);
 
-            // Execute the dvd query
-            if ($dvdStmt->execute()) {
-                $dvdStmt->close();
+        // Execute the dvd query
+        if ($dvdStmt->execute()) {
+            $dvdStmt->close();
 
-                // Set the 'id' property to be the same as 'product_id'
-                $this->id = $product_id;
+            // Set the product_type to 'dvd'
+            $this->setProductType('dvd');
 
-                // Set the product_type to 'dvd'
-                $this->setProductType('dvd');
-
-                // Return true if the dvd creation is successful
-                return true;
-            } else {
-                // If execution fails, capture the MySQL error message
-                $error = $this->conn->error;
-
-                // Log the error for further analysis
-                error_log("Failed to create dvd. MySQL error: " . $error);
-
-                // Return the error message
-                return array('error' => $error);
-            }
+            // Return true if the dvd creation is successful
+            return true;
         } else {
-            // If execution fails for the product query, capture the MySQL error message
+            // If execution fails, capture the MySQL error message
             $error = $this->conn->error;
 
             // Log the error for further analysis
-            error_log("Failed to create product. MySQL error: " . $error);
+            error_log("Failed to create dvd. MySQL error: " . $error);
 
             // Return the error message
             return array('error' => $error);
         }
+    } else {
+        // If execution fails for the product query, capture the MySQL error message
+        $error = $this->conn->error;
+
+        // Log the error for further analysis
+        error_log("Failed to create product. MySQL error: " . $error);
+
+        // Return the error message
+        return array('error' => $error);
     }
+}
+
 
     
 
