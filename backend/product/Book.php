@@ -27,7 +27,6 @@ class Book extends Product {
         $this->weight = $weight;
     }
 
-// Inside the Book class
 public function create()
 {
     // Insert data into the "product" table
@@ -50,8 +49,8 @@ public function create()
     // Insert data into the "product" table first
     if ($productStmt->execute()) {
         // Get the generated product ID
-        $product_id = $this->conn->insert_id; // Explicitly define product_id
-        $this->id = $this->conn->insert_id; // Update this line
+        $product_id = $this->conn->insert_id; //  define product_id
+        $this->id = $this->conn->insert_id; 
         $productStmt->close();
 
         // Insert data into the "book" table
@@ -61,7 +60,7 @@ public function create()
 
         $weight = $this->getWeight();
 
-        // Use explicitly defined $product_id as both id and product_id
+        // Use  defined $product_id as both id and product_id
         $bookStmt->bind_param("iid", $product_id, $product_id, $weight);
 
         // Execute the book query
@@ -77,20 +76,18 @@ public function create()
             // Return true if the book creation is successful
             return true;
         } else {
-            // If execution fails, capture the MySQL error message
+            // If fails, capture the MySQL error message
             $error = $this->conn->error;
 
-            // Log the error for further analysis
             error_log("Failed to create book. MySQL error: " . $error);
 
             // Return the error message
             return array('error' => $error);
         }
     } else {
-        // If execution fails for the product query, capture the MySQL error message
+        // If execution fails for the query, capture the MySQL error message
         $error = $this->conn->error;
 
-        // Log the error for further analysis
         error_log("Failed to create product. MySQL error: " . $error);
 
         // Return the error message
@@ -129,7 +126,6 @@ public function create()
         }
     }
 
-// Inside the Book class
 function delete($conn) {
     try {
         $productId = $this->getId();
@@ -149,10 +145,9 @@ function delete($conn) {
         parent::delete($conn);
 
     } catch (Exception $e) {
-        // Log the error for further analysis
+
         error_log($e);
 
-        // Re-throw the exception to propagate it up the call stack
         throw $e;
     }
 }

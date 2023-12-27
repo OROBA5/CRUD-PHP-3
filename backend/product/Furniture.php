@@ -47,7 +47,6 @@ class Furniture extends Product {
         $this->length = $length;
     }
 
-    // Inside the Furniture class
 public function create()
 {
     // Insert data into the "product" table
@@ -70,8 +69,8 @@ public function create()
     // Insert data into the "product" table first
     if ($productStmt->execute()) {
         // Get the generated product ID
-        $product_id = $this->conn->insert_id; // Explicitly define product_id
-        $this->id = $product_id; // Update this line
+        $product_id = $this->conn->insert_id; // define product_id
+        $this->id = $product_id;
         $productStmt->close();
 
         // Insert data into the "furniture" table
@@ -83,7 +82,7 @@ public function create()
         $width = $this->getWidth();
         $length = $this->getLength();
 
-        // Use explicitly defined $product_id as both id and product_id
+        // Use defined $product_id as both id and product_id
         $furnitureStmt->bind_param("iiiii", $product_id, $product_id, $height, $width, $length);
 
         // Execute the furniture query
@@ -96,20 +95,19 @@ public function create()
             // Return true if the furniture creation is successful
             return true;
         } else {
-            // If execution fails, capture the MySQL error message
+            // If fails, capture the MySQL error message
             $error = $this->conn->error;
 
-            // Log the error for further analysis
             error_log("Failed to create furniture. MySQL error: " . $error);
 
             // Return the error message
             return array('error' => $error);
         }
     } else {
-        // If execution fails for the product query, capture the MySQL error message
+        // If execution fails for the query, capture the MySQL error message
         $error = $this->conn->error;
 
-        // Log the error for further analysis
+
         error_log("Failed to create product. MySQL error: " . $error);
 
         // Return the error message
@@ -117,9 +115,6 @@ public function create()
     }
 }
 
-
-    // Read function specific to Furniture
-    // Read function specific to Furniture
     public function read() {
         $stmt = $this->conn->prepare("
             SELECT f.*, p.sku, p.name, p.price, p.product_type
@@ -162,14 +157,11 @@ public function create()
     
             $deleteFurnitureStmt->close();
     
-            // Call the delete() method of the parent class (Product)
             parent::delete($conn);
     
         } catch (Exception $e) {
-            // Log the error for further analysis
             error_log($e);
     
-            // Re-throw the exception to propagate it up the call stack
             throw $e;
         }
     }

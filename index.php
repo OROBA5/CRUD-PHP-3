@@ -18,8 +18,8 @@ session_start();
   <div class="navbar">
     <h1>Product list</h1>
     <div class="inner-navbar">
-      <button><a href="./addProduct">ADD</a></button>
-      <form id="deleteForm" method="POST" action="http://localhost/scandiweb-api/actions/delete.php">
+      <button><a href="./addProduct.php">ADD</a></button>
+      <form id="deleteForm" method="POST" action="delete">
         <button type="submit" id="massDeleteButton">MASS DELETE</button>
       </form>
     </div>
@@ -32,7 +32,7 @@ session_start();
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery library -->
-  <script src="list.js"></script>
+  <script src="./assets/js/index.js"></script>
 </body>
 
 </html>

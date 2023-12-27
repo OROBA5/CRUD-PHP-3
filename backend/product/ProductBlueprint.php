@@ -5,7 +5,7 @@ namespace Product;
 // abstract class for the products
 
 abstract class ProductBlueprint {
-        // declare primary product fields
+
         protected $id;
         protected $sku;
         protected $name;

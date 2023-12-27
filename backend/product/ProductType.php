@@ -4,9 +4,8 @@ namespace Product;
 
 class ProductType
 {
-    public static function create($json, $conn)
+    public static function create($data, $conn)
     {
-        $data = json_decode($json, true);
 
         if (!$data || !isset($data['product_type'])) {
             return array('error' => 'Invalid JSON data or missing product_type');
@@ -19,19 +18,22 @@ class ProductType
         if (class_exists($className)) {
             $product = new $className($conn);
 
-            foreach ($data as $key => $value) {
-                $setter = 'set' . ucfirst($key);
-                if (method_exists($product, $setter)) {
-                    $product->$setter($value);
-                }
-            }
 
-            // Set the product_type property within the Product class
+        foreach ($data as $key => $value) {
+            $setter = 'set' . ucfirst($key);
+
+            // Check if the method exists and is callable
+            if (method_exists($product, $setter) && is_callable([$product, $setter])) {
+                // Call the setter method to set the property value
+                $product->$setter($value);
+            }
+        }
+
+
             if (property_exists($product, 'product_type')) {
                 $product->product_type = $productType;
             }
 
-            // Call the create method if it exists in the product class
             if (method_exists($product, 'create')) {
                 return $product->create();
             } else {
@@ -58,12 +60,10 @@ class ProductType
         if (class_exists($className)) {
             $product = new $className($conn);
 
-            // Set the id property within the Product class
             if (property_exists($product, 'id')) {
                 $product->id = $productId;
             }
 
-            // Call the delete method if it exists in the product class
             if (method_exists($product, 'delete')) {
                 return $product->delete($conn);
             } else {
@@ -74,8 +74,6 @@ class ProductType
         }
     }
 
-// Inside the ProductType class
-// Inside the ProductType class
 public function read($conn)
 {
     $products = [];
@@ -91,29 +89,27 @@ public function read($conn)
     while ($productType = $productTypeResult->fetch_assoc()) {
         $productClassName = 'Product\\' . ucfirst($productType['name']);
 
-        // Use ReflectionClass to instantiate the class with $conn parameter
+        //ReflectionClass to instantiate the class
         $reflectionClass = new \ReflectionClass($productClassName);
 
-        // Create a new instance of the product class with $conn parameter
+        // Create a new instance of the product class
         $product = $reflectionClass->newInstanceArgs([$conn]);
 
-        // Call the read method of the product object
         $result = $product->read();
 
         // Merge the results into the $products array
         $products = array_merge($products, $result);
     }
 
-    // Remove duplicates based on the "id" field
+    // Remove duplicates based on id
     $uniqueProducts = array_map("unserialize", array_unique(array_map("serialize", $products)));
 
-    // Sort the array by the "id" field in ascending order
+    // Sort the array
     usort($uniqueProducts, function ($a, $b) {
         return $a['id'] - $b['id'];
     });
 
-    // Output the sorted and unique results as JSON
-    echo json_encode($uniqueProducts, JSON_PRETTY_PRINT);
+    echo json_encode($uniqueProducts);
 
     return $uniqueProducts;
 }

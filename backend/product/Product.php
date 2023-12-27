@@ -3,7 +3,7 @@
 namespace Product;
 
 class Product extends ProductBlueprint {
-    // declare primary product fields
+
     public $id;
     public $sku;
     public $name;
@@ -11,7 +11,6 @@ class Product extends ProductBlueprint {
     public $product_type;
     private $conn;
 
-    //declares constructor for products
     public function __construct($db)
     { 
         $this->conn = $db;
@@ -86,7 +85,6 @@ class Product extends ProductBlueprint {
     
         $productStmt->bind_param("ssii", $sku, $name, $price, $productType);
     
-        // Insert data into the "product" table first
         if ($productStmt->execute()) {
             // Get the generated product ID
             $this->id = $productStmt->insert_id;

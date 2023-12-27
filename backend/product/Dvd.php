@@ -27,7 +27,6 @@ class Dvd extends Product {
         $this->size = $size;
     }
 
-    // Inside the Dvd class
 public function create()
 {
     // Insert data into the "product" table
@@ -50,8 +49,8 @@ public function create()
     // Insert data into the "product" table first
     if ($productStmt->execute()) {
         // Get the generated product ID
-        $product_id = $this->conn->insert_id; // Explicitly define product_id
-        $this->id = $product_id; // Update this line
+        $product_id = $this->conn->insert_id; //  define product_id
+        $this->id = $product_id;
         $productStmt->close();
 
         // Insert data into the "dvd" table
@@ -61,7 +60,7 @@ public function create()
 
         $size = $this->getSize();
 
-        // Use explicitly defined $product_id as both id and product_id
+        // Use defined $product_id as both id and product_id
         $dvdStmt->bind_param("iii", $product_id, $product_id, $size);
 
         // Execute the dvd query
@@ -74,20 +73,18 @@ public function create()
             // Return true if the dvd creation is successful
             return true;
         } else {
-            // If execution fails, capture the MySQL error message
+            // If fails, capture the MySQL error message
             $error = $this->conn->error;
 
-            // Log the error for further analysis
             error_log("Failed to create dvd. MySQL error: " . $error);
 
             // Return the error message
             return array('error' => $error);
         }
     } else {
-        // If execution fails for the product query, capture the MySQL error message
+        // If execution fails for the query, capture the MySQL error message
         $error = $this->conn->error;
 
-        // Log the error for further analysis
         error_log("Failed to create product. MySQL error: " . $error);
 
         // Return the error message
@@ -95,10 +92,6 @@ public function create()
     }
 }
 
-
-    
-
-    // Read function specific to DVDs
     public function read() {
         $stmt = $this->conn->prepare("
         SELECT d.*, p.sku, p.name, p.price, p.product_type
@@ -124,7 +117,6 @@ public function create()
     }
     }
 
-    // Inside the Dvd class
     public function delete($conn) {
         try {
             $productId = $this->getId();
@@ -144,10 +136,8 @@ public function create()
             parent::delete($conn);
 
         } catch (\Exception $e) {
-            // Log the error for further analysis
             error_log($e);
 
-            // Re-throw the exception to propagate it up the call stack
             throw $e;
         }
     }
