@@ -44,35 +44,48 @@ class ProductType
         }
     }
 
-    public static function delete($json, $conn)
+    public static function delete($data, $conn)
     {
-        $data = json_decode($json, true);
-
         if (!$data || !isset($data['id']) || !isset($data['product_type'])) {
             return array('error' => 'Invalid JSON data or missing id or product_type');
         }
-
+    
         $productId = $data['id'];
         $productType = $data['product_type'];
-
+    
         $className = 'Product\\' . ucfirst($productType);
-
+    
         if (class_exists($className)) {
             $product = new $className($conn);
-
+    
             if (property_exists($product, 'id')) {
                 $product->id = $productId;
             }
-
+    
             if (method_exists($product, 'delete')) {
-                return $product->delete($conn);
+                $result = $product->delete($conn);
+    
+                if ($result === true) {
+                    // Log success message
+                    error_log('Product deleted successfully');
+                    return array('success' => 'Product deleted successfully');
+                } else {
+                    // Log error message
+                    error_log('Failed to delete product: ' . $result['error']);
+                    return $result;
+                }
             } else {
+                // Log error message
+                error_log('Delete method not implemented in ' . $productType);
                 return array('error' => 'Delete method not implemented in ' . $productType);
             }
         } else {
+            // Log error message
+            error_log('Unsupported product type');
             return array('error' => 'Unsupported product type');
         }
     }
+    
 
 public function read($conn)
 {

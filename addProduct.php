@@ -8,7 +8,7 @@ session_start();
 <html>
 <head>
     <title>Add a product</title>
-    <link rel="stylesheet" type="text/css" href="./index.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/index.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery library -->
 </head>
 <body class="add">
