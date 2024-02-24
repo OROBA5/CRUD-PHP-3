@@ -70,7 +70,7 @@ session_start();
     </form>
     <footer class="add-footer">
         <script src="./assets/js/AddProduct.js"></script>
-        <h3> Scandiweb Test assignment</h3>
+        <h3> Improved CRUD API</h3>
     </footer>
 </body>
 </html>
