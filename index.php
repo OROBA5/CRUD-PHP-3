@@ -28,7 +28,7 @@ session_start();
     <!-- Products will be displayed here dynamically using JavaScript -->
   </div>
   <footer>
-    <h3>Scandiweb Test Assignment</h3>
+    <h3> Improved CRUD API</h3>
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery library -->
